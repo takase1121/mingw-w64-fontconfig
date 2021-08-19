@@ -19,9 +19,13 @@ jobs:
         install: >-
           base-devel
           git
-          zip
-          wget
-          zstd
           xz
+    - name: Install Release Dependencies
+      run: |
+        pacman --noconfirm -S \
+          ${MINGW_PACKAGE_PREFIX}-gcc \
+          ${MINGW_PACKAGE_PREFIX}-meson \
+          ${MINGW_PACKAGE_PREFIX}-ninja \
+          ${MINGW_PACKAGE_PREFIX}-pkg-config
     - name: Release Build
       run: bash build.sh
