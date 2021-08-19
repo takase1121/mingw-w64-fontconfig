@@ -26,6 +26,7 @@ jobs:
           ${MINGW_PACKAGE_PREFIX}-gcc \
           ${MINGW_PACKAGE_PREFIX}-meson \
           ${MINGW_PACKAGE_PREFIX}-ninja \
-          ${MINGW_PACKAGE_PREFIX}-pkg-config
+          ${MINGW_PACKAGE_PREFIX}-pkg-config \
+          ${MINGW_PACKAGE_PREFIX}-gperf
     - name: Release Build
       run: bash build.sh
