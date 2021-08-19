@@ -1,1 +1,41 @@
-
+name: build
+on: [push]
+jobs:
+  build:
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        msystem: [MINGW32, MINGW64]
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        #msystem: MINGW64
+        msystem: ${{ matrix.msystem }}
+        update: true
+        install: >-
+          base-devel
+          git
+          zip
+          wget
+          zstd
+          xz
+    - name: download ft2
+      run: |
+        wget https://download.savannah.gnu.org/releases/freetype/freetype-2.11.0.tar.xz
+        xz < freetype-2.11.0.tar.xz | tar -xf -
+    - name: download fontconfig
+      run: |
+        wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.94.tar.xz
+        xz < fontconfig-2.13.94.tar.xz | tar -xf -
+    - name: Release Build
+      run: |
+        cd freetype-2.11.0
+        ./configure --with-zlib=no --with-bzip2=no --with-png=no --with-harfbuzz=no --with-brotli=no --enable-static=no --prefix=../build
+        make && make install
+        cd ..
+        cd fontconfig-2.13.94
+        meson build -Ddoc=disabled -Dnls=disabled -Dtests=disabled -Dtools=enabled --prefix=../build
+        ninja -C build install
