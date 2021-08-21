@@ -1,0 +1,22 @@
+diff --git a/fc-cache/meson.build b/fc-cache/meson.build
+index ed68d1e..0d7617c 100644
+--- a/fc-cache/meson.build
++++ b/fc-cache/meson.build
+@@ -8,6 +8,6 @@ fccache = executable('fc-cache', ['fc-cache.c', fcstdint_h, alias_headers, ft_al
+ tools_man_pages += ['fc-cache']
+ 
+ # Do not try to execute target's fc-cache on host when cross compiling
+-if not meson.is_cross_build()
++if get_option('fc-cache').enabled() and not meson.is_cross_build()
+   meson.add_install_script(fccache, '-s', '-f', '-v')
+ endif
+diff --git a/meson_options.txt b/meson_options.txt
+index d603049..59a3c75 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -11,3 +11,5 @@ option('tests', type : 'feature', value : 'auto', yield : true,
+   description: 'Enable unit tests')
+ option('tools', type : 'feature', value : 'auto', yield : true,
+   description: 'Build command-line tools (fc-list, fc-query, etc.)')
++option('fc-cache', type: 'feature', value : 'enabled',
++  description : 'Run fc-cache on install')
