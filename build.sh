@@ -23,3 +23,5 @@ fi
 
 PKG_CONFIG_PATH=$BUILD_DIR/lib/pkgconfig CFLAGS=-static-libgcc CXXFLAGS=-static-libstdc++ meson build -Ddoc=disabled -Dnls=disabled -Dtests=disabled -Dtools=enabled -Dfc-cache=disabled --prefix=$BUILD_DIR
 ninja -C build install
+
+tar -czf artifact.tar.gz build/
