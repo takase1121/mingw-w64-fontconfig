@@ -1,5 +1,10 @@
-name: build
-on: [push]
+name: fontconfig
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
 jobs:
   build:
     runs-on: windows-2019
