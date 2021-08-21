@@ -77,7 +77,7 @@ for f in "$BUILD_DIR/bin"/*{.dll,.exe}; do
 done
 
 # since windows cannot use symlinks (at least by default for a lot of people)
-for f in "$BUILD_DIR/etc/fonts"/*.conf; do
+for f in "$BUILD_DIR/etc/fonts/conf.d"/*.conf; do
 	rpath="$(readlink -e "$f")"
 	rm -f "$f"
 	mv "$rpath" "$f"
