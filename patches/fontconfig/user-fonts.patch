@@ -1,0 +1,34 @@
+diff --git a/meson.build b/meson.build
+index 0ec3dc6..60f4bca 100644
+--- a/meson.build
++++ b/meson.build
+@@ -204,7 +204,7 @@ prefix = get_option('prefix')
+ fonts_conf = configuration_data()
+ 
+ if host_machine.system() == 'windows'
+-  fc_fonts_path = ['WINDOWSFONTDIR']
++  fc_fonts_path = ['WINDOWSFONTDIR', 'WINDOWSUSERFONTDIR']
+   fc_cachedir = 'LOCAL_APPDATA_FONTCONFIG_CACHE'
+ else
+   if host_machine.system() == 'darwin'
+diff --git a/src/fcxml.c b/src/fcxml.c
+index 83019c0..1f4d089 100644
+--- a/src/fcxml.c
++++ b/src/fcxml.c
+@@ -1363,6 +1363,16 @@ _get_real_paths_from_prefix(FcConfigParse *parse, const FcChar8 *path, const FcC
+ 	if (p) *p = '\0';
+ 	strcat ((char *) path, "\\..\\share\\fonts");
+     }
++    else if (strcmp ((const char *) path, "WINDOWSUSERFONTDIR") == 0)
++    {
++        path = buffer;
++        if (!(pSHGetFolderPathA && SUCCEEDED(pSHGetFolderPathA(NULL, /* CSIDL_LOCAL_APPDATA */ 28, NULL, 0, (char *) buffer))))
++        {
++            FcConfigMessage(parse, FcSevereError, "SHGetFolderPathA failed");
++            return NULL;
++        }
++        strcat((char *) path, "\\Microsoft\\Windows\\Fonts");
++    }
+     else if (strcmp ((const char *) path, "WINDOWSFONTDIR") == 0)
+     {
+ 	int rc;
