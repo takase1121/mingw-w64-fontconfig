@@ -19,7 +19,7 @@ jobs:
         install: >-
           base-devel
           git
-          xz
+          zip
     - name: Install Release Dependencies
       run: |
         pacman --noconfirm -S \
@@ -34,4 +34,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: fontconfig
-        path: artifact.tar.gz
+        path: fontconfig.zip

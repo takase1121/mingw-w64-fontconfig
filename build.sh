@@ -76,4 +76,16 @@ for f in "$BUILD_DIR/bin"/*{.dll,.exe}; do
 	strip --strip-unneeded "$f"
 done
 
-tar -czf artifact.tar.gz build/
+# since windows cannot use symlinks (at least by default for a lot of people)
+for f in "$BUILD_DIR/etc/fonts"/*.conf; do
+	rpath="$(readlink -e "$f")"
+	rm -f "$f"
+	mv "$rpath" "$f"
+done
+
+mv "$BUILD_DIR" fontconfig
+mv fontconfig/etc/fonts fontconfig/fonts
+mv fontconfig/share/fontconfig/conf.avail fontconfig/fonts/conf.avail
+rm -rf fontconfig/{include,lib,share}
+
+zip -r fontconfig.zip fontconfig/
