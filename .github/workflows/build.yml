@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: Set Environment Variables
         run: echo "INSTALL_REF=${GITHUB_REF##*/}" >> "$GITHUB_ENV"
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: fontconfig
       - uses: softprops/action-gh-release@v1
